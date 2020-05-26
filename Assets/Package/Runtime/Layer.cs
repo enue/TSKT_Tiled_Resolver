@@ -16,6 +16,9 @@ namespace TSKT.TiledResolvers
             [System.Xml.Serialization.XmlAttribute]
             public string encoding;
 
+            [System.Xml.Serialization.XmlAttribute]
+            public string compression;
+
             [System.Xml.Serialization.XmlText]
             public string value;
 
@@ -32,25 +35,30 @@ namespace TSKT.TiledResolvers
                     else if (encoding == "base64")
                     {
                         var bytes = System.Convert.FromBase64String(value);
-                        return BytesToInts(bytes);
-                    }
-                    else if (encoding == "gzip")
-                    {
-                        var bytes = DecompressGzip(value);
-                        return BytesToInts(bytes);
-                    }
-                    else if (encoding == "zlib")
-                    {
-                        var bytes = DecompressZlib(value);
+                        if (string.IsNullOrEmpty(compression))
+                        {
+                            // nop
+                        }
+                        else if (compression == "gzip")
+                        {
+                            bytes = DecompressGzip(bytes);
+                        }
+                        else if (compression == "zlib")
+                        {
+                            bytes = DecompressZlib(bytes);
+                        }
+                        else
+                        {
+                            throw new System.ArgumentException("not support compresion " + compression);
+                        }
                         return BytesToInts(bytes);
                     }
                     throw new System.ArgumentException("not support encoding " + encoding);
                 }
             }
 
-            public static byte[] DecompressGzip(string base64)
+            public static byte[] DecompressGzip(byte[] compressedBytes)
             {
-                var compressedBytes = System.Convert.FromBase64String(base64);
                 using (var compressed = new MemoryStream(compressedBytes))
                 {
                     using (var decompressionStream = new GZipStream(compressed, CompressionMode.Decompress))
@@ -64,9 +72,8 @@ namespace TSKT.TiledResolvers
                 }
             }
 
-            public static byte[] DecompressZlib(string base64)
+            public static byte[] DecompressZlib(byte[] compressedBytes)
             {
-                var compressedBytes = System.Convert.FromBase64String(base64);
                 using (var compressed = new MemoryStream(compressedBytes))
                 {
                     // skip header(2bytes)

@@ -15,8 +15,8 @@ namespace TSKT.TiledResolvers.Test
         public void DecompressData(string base64, string gzip, string zlib)
         {
             var bytes = System.Convert.FromBase64String(base64);
-            var decompressedGzip = TiledResolvers.Layer.Data.DecompressGzip(gzip);
-            var decompressedZlib = TiledResolvers.Layer.Data.DecompressZlib(zlib);
+            var decompressedGzip = TiledResolvers.Layer.Data.DecompressGzip(System.Convert.FromBase64String(gzip));
+            var decompressedZlib = TiledResolvers.Layer.Data.DecompressZlib(System.Convert.FromBase64String(zlib));
 
             Assert.AreEqual(bytes, decompressedGzip);
             Assert.AreEqual(bytes, decompressedZlib);
