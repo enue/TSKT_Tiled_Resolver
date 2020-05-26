@@ -57,6 +57,36 @@ namespace TSKT.TiledResolvers
             return (Map)serializer.Deserialize(reader);
         }
 
+        public IEnumerable<(Layer layer, Vector2 offset, float opacity)> FlattenLayers
+        {
+            get
+            {
+                var tasks = new Stack<(Layer layer, Vector2 offset, float opacity)>();
+                foreach(var it in Layers.Reverse())
+                {
+                    tasks.Push((it, Vector2.zero, 1f));
+                }
+
+                while (tasks.Count > 0)
+                {
+                    var taks = tasks.Pop();
+                    yield return taks;
+
+                    if (taks.layer is GroupLayer groupLayer)
+                    {
+                        var offset = new Vector2(
+                            taks.offset.x + groupLayer.offsetx,
+                            taks.offset.y + groupLayer.offsety);
+                        var opacity = taks.opacity * groupLayer.opacity;
+                        foreach (var it in groupLayer.Layers.Reverse())
+                        {
+                            tasks.Push((it, offset, opacity));
+                        }
+                    }
+                }
+            }
+        }
+
         public TileSet[] UsedTileSets
         {
             get
