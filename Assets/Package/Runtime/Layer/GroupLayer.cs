@@ -10,6 +10,7 @@ namespace TSKT.TiledResolvers
     {
         [System.Xml.Serialization.XmlElement("layer", typeof(TileLayer))]
         [System.Xml.Serialization.XmlElement("objectgroup", typeof(ObjectLayer))]
+        [System.Xml.Serialization.XmlElement("group", typeof(GroupLayer))]
         public Layer[] layers;
         public Layer[] Layers => layers ?? System.Array.Empty<Layer>();
 
