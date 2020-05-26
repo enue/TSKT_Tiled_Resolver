@@ -120,8 +120,9 @@ namespace TSKT.TiledResolvers
         [System.Xml.Serialization.XmlAttribute]
         public bool visible;
 
-        [System.Xml.Serialization.XmlElement("properties")]
-        public PropertyGroup propertyGroup;
+        [System.Xml.Serialization.XmlArrayItem("property")]
+        public Property[] properties;
+        public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
         [System.Xml.Serialization.XmlElement]
         public Data data;

@@ -82,8 +82,10 @@ namespace TSKT.TiledResolvers
             [System.Xml.Serialization.XmlAttribute]
             public long gid;
 
-            [System.Xml.Serialization.XmlElement("properties")]
-            public PropertyGroup propertyGoup;
+            [System.Xml.Serialization.XmlArrayItem("property")]
+            public Property[] properties;
+            public PropertyGroup PropertyGroup => new PropertyGroup(properties);
+
             [System.Xml.Serialization.XmlElement]
             public Ellipse ellipse;
             [System.Xml.Serialization.XmlElement]
@@ -122,8 +124,9 @@ namespace TSKT.TiledResolvers
         [System.Xml.Serialization.XmlAttribute]
         public float offsety = 0f;
 
-        [System.Xml.Serialization.XmlElement("properties")]
-        public PropertyGroup propertyGroup;
+        [System.Xml.Serialization.XmlArrayItem("property")]
+        public Property[] properties;
+        public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
         [System.Xml.Serialization.XmlElement("object")]
         public Object[] objects;

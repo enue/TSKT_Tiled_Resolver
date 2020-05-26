@@ -7,26 +7,28 @@ using System.Linq;
 namespace TSKT.TiledResolvers
 {
     [System.Serializable]
-    public struct PropertyGroup
+    public struct Property
     {
-        [System.Serializable]
-        public struct Property
-        {
-            [System.Xml.Serialization.XmlAttribute]
-            public string name;
-            [System.Xml.Serialization.XmlAttribute]
-            public string type;
-            [System.Xml.Serialization.XmlAttribute]
-            public string value;
-        }
+        [System.Xml.Serialization.XmlAttribute]
+        public string name;
+        [System.Xml.Serialization.XmlAttribute]
+        public string type;
+        [System.Xml.Serialization.XmlAttribute]
+        public string value;
+    }
 
-        [System.Xml.Serialization.XmlElement("property")]
-        public Property[] properties;
-        public Property[] Properties => properties ?? System.Array.Empty<Property>();
+    public readonly struct PropertyGroup
+    {
+        readonly Property[] properties;
+
+        public PropertyGroup(Property[] properties)
+        {
+            this.properties = properties ?? System.Array.Empty<Property>();
+        }
 
         public bool TryGetString(string key, out string value)
         {
-            foreach (var it in Properties)
+            foreach (var it in properties)
             {
                 if (it.name == key
                     && (it.type == "string" || string.IsNullOrEmpty(it.type)))
@@ -41,7 +43,7 @@ namespace TSKT.TiledResolvers
 
         public bool TryGetBool(string key, out bool value)
         {
-            foreach (var it in Properties)
+            foreach (var it in properties)
             {
                 if (it.name == key
                     && it.type == "bool")
@@ -56,7 +58,7 @@ namespace TSKT.TiledResolvers
 
         public bool TryGetInt(string key, out int value)
         {
-            foreach (var it in Properties)
+            foreach (var it in properties)
             {
                 if (it.name == key
                     && it.type == "int")
@@ -71,7 +73,7 @@ namespace TSKT.TiledResolvers
 
         public bool TryGetFloat(string key, out float value)
         {
-            foreach (var it in Properties)
+            foreach (var it in properties)
             {
                 if (it.name == key
                     && it.type == "float")
@@ -86,7 +88,7 @@ namespace TSKT.TiledResolvers
 
         public bool TryGetColor(string key, out Color32 value)
         {
-            foreach (var it in Properties)
+            foreach (var it in properties)
             {
                 if (it.name == key
                     && it.type == "color")

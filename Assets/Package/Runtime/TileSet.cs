@@ -29,8 +29,9 @@ namespace TSKT.TiledResolvers
             [System.Xml.Serialization.XmlAttribute]
             public int id;
 
-            [System.Xml.Serialization.XmlElement("properties")]
-            public PropertyGroup propertyGroup;
+            [System.Xml.Serialization.XmlArrayItem("property")]
+            public Property[] properties;
+            public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
             public Animation animation;
         }

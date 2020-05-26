@@ -36,8 +36,9 @@ namespace TSKT.TiledResolvers
         [System.Xml.Serialization.XmlAttribute("nextobjectid")]
         public int nextObjectId;
 
-        [System.Xml.Serialization.XmlElement("properties")]
-        public PropertyGroup propertyGroup;
+        [System.Xml.Serialization.XmlArrayItem("property")]
+        public Property[] properties;
+        public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
         [System.Xml.Serialization.XmlElement("tileset")]
         public TileSet[] tileSets;
