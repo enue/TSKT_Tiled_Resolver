@@ -101,7 +101,7 @@ namespace TSKT.TiledResolvers
                     }
                     else if (layer is ObjectLayer objectLayer)
                     {
-                        foreach (var obj in objectLayer.objects)
+                        foreach (var obj in objectLayer.Objects)
                         {
                             usedGids.Add(obj.Gid);
                         }
