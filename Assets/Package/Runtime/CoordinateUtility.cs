@@ -46,20 +46,52 @@ namespace TSKT.TiledResolvers
             throw new System.ArgumentException(orientation.ToString());
         }
 
-        static float GetStaggerAxisLength(int tileCount, int tileLength, int hexSideLength)
+        static public Vector2 GetPosition(int x, int y, Orientation orientation, int tileWidth, int tileHeight, int height,
+            StaggerAxis staggerAxis, StaggerIndex staggerIndex, int hexSideLength)
         {
-            return (tileCount - 1) * (tileLength + hexSideLength) / 2 + tileLength;
-        }
-
-        static float GetLength(int tileCount, int tileLength, int staggerAxisLength)
-        {
-            float length = tileLength * tileCount;
-            if (staggerAxisLength > 1)
+            if (orientation == Orientation.Orthogonal)
             {
-                length += tileLength / 2f;
+                return new Vector2(x * tileWidth, y * tileHeight);
             }
-            return length;
-        }
+            if (orientation == Orientation.Isometric)
+            {
+                var originX = (tileHeight * (height - 1)) / 2f;
+                var originY = 0f;
 
+                return new Vector2(
+                    originX + (x * tileWidth - y * tileHeight) / 2f,
+                    originY + (x * tileWidth + y * tileHeight) / 2f);
+            }
+            if (orientation == Orientation.Staggered)
+            {
+                return GetPosition(x, y, Orientation.Hexagonal, tileWidth, tileHeight, height, staggerAxis, staggerIndex, 0);
+            }
+            if (orientation == Orientation.Hexagonal)
+            {
+                if (staggerAxis == StaggerAxis.X)
+                {
+                    var p = x * (tileWidth + hexSideLength) / 2;
+                    if (staggerIndex == StaggerIndex.Odd)
+                    {
+                        var q = y * tileHeight + (x % 2) * tileHeight * 0.5f;
+                        return new Vector2(p, q);
+                    }
+                    if (staggerIndex == StaggerIndex.Even)
+                    {
+                        var q = y * tileHeight + (1 - x % 2) * tileHeight * 0.5f;
+                        return new Vector2(p, q);
+                    }
+                    throw new System.ArgumentException(staggerIndex.ToString());
+                }
+                if (staggerAxis == StaggerAxis.Y)
+                {
+                    var reversedPosition = GetPosition(y, x, orientation, tileHeight, tileWidth, 0, StaggerAxis.X, staggerIndex, hexSideLength);
+                    return new Vector2(reversedPosition.y, reversedPosition.x);
+                }
+                throw new System.ArgumentException(staggerAxis.ToString());
+            }
+
+            throw new System.ArgumentException(orientation.ToString());
+        }
     }
 }

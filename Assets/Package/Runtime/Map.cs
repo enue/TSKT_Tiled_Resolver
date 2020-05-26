@@ -68,6 +68,11 @@ namespace TSKT.TiledResolvers
 
         public Vector2 LayerPixelSize => CoordinateUtility.GetLayerPixelSize(orientation, width, height, tileWidth, tileHeight, staggerAxis, hexSideLength);
 
+        public Vector2 GetCellPosition(int i, int j)
+        {
+            return CoordinateUtility.GetPosition(i, j, orientation, tileWidth, tileHeight, height, staggerAxis, staggerIndex, hexSideLength);
+        }
+
         public IEnumerable<(Layer layer, Vector2 offset, float opacity)> FlattenLayers
         {
             get
