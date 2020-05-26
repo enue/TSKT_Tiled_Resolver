@@ -92,17 +92,28 @@ namespace TSKT.TiledResolvers
             get
             {
                 var usedGids = new HashSet<int>();
-                foreach (var layer in Layers.OfType<TileLayer>())
+
+                foreach (var (layer, _, _) in FlattenLayers)
                 {
-                    usedGids.UnionWith(layer.data.Values);
-                }
-                foreach (var obj in Layers.OfType<ObjectLayer>().SelectMany(_ => _.Objects))
-                {
-                    usedGids.Add(obj.Gid);
-                }
-                foreach (var gid in Layers.OfType<GroupLayer>().SelectMany(_ => _.UsedTileGids))
-                {
-                    usedGids.Add(gid);
+                    if (layer is TileLayer tileLayer)
+                    {
+                        usedGids.UnionWith(tileLayer.data.Values);
+                    }
+                    else if (layer is ObjectLayer objectLayer)
+                    {
+                        foreach (var obj in objectLayer.objects)
+                        {
+                            usedGids.Add(obj.Gid);
+                        }
+                    }
+                    else if (layer is GroupLayer)
+                    {
+                        // nop
+                    }
+                    else
+                    {
+                        throw new System.ArgumentException(layer.GetType().ToString());
+                    }
                 }
 
                 var result = new List<TileSet>();
