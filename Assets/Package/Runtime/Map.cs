@@ -14,9 +14,9 @@ namespace TSKT.TiledResolvers
         [System.Xml.Serialization.XmlAttribute("tiledversion")]
         public string tiledVersion;
         [System.Xml.Serialization.XmlAttribute]
-        public string orientation;
+        public Orientation orientation;
         [System.Xml.Serialization.XmlAttribute("renderorder")]
-        public string renderOrder;
+        public RenderOrder renderOrder;
         [System.Xml.Serialization.XmlAttribute("compressionlevel")]
         public int compressionLevel;
 

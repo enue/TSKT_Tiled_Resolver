@@ -12,7 +12,7 @@ namespace TSKT.TiledResolvers
         [System.Xml.Serialization.XmlAttribute]
         public string name;
         [System.Xml.Serialization.XmlAttribute]
-        public string type;
+        public PropertyType type;
         [System.Xml.Serialization.XmlAttribute]
         public string value;
     }
@@ -31,7 +31,7 @@ namespace TSKT.TiledResolvers
             foreach (var it in properties)
             {
                 if (it.name == key
-                    && (it.type == "string" || string.IsNullOrEmpty(it.type)))
+                    && (it.type == PropertyType.String))
                 {
                     value = it.value;
                     return true;
@@ -46,7 +46,7 @@ namespace TSKT.TiledResolvers
             foreach (var it in properties)
             {
                 if (it.name == key
-                    && it.type == "bool")
+                    && it.type == PropertyType.Bool)
                 {
                     value = bool.Parse(it.value);
                     return true;
@@ -61,7 +61,7 @@ namespace TSKT.TiledResolvers
             foreach (var it in properties)
             {
                 if (it.name == key
-                    && it.type == "int")
+                    && it.type == PropertyType.Int)
                 {
                     value = int.Parse(it.value, System.Globalization.CultureInfo.InvariantCulture);
                     return true;
@@ -76,7 +76,7 @@ namespace TSKT.TiledResolvers
             foreach (var it in properties)
             {
                 if (it.name == key
-                    && it.type == "float")
+                    && it.type == PropertyType.Float)
                 {
                     value = float.Parse(it.value, System.Globalization.CultureInfo.InvariantCulture);
                     return true;
@@ -91,7 +91,7 @@ namespace TSKT.TiledResolvers
             foreach (var it in properties)
             {
                 if (it.name == key
-                    && it.type == "color")
+                    && it.type == PropertyType.Color)
                 {
                     value = ParseColor(it.value);
                     return true;

@@ -52,6 +52,7 @@ namespace TSKT.TiledResolvers
 
                 [System.Xml.Serialization.XmlAttribute]
                 public string color;
+                public Color32 Color => PropertyGroup.ParseColor(color);
 
                 [System.Xml.Serialization.XmlAttribute]
                 public string halign;
@@ -111,9 +112,10 @@ namespace TSKT.TiledResolvers
 
         [System.Xml.Serialization.XmlAttribute]
         public string color;
+        public Color32 Color => PropertyGroup.ParseColor(color);
 
         [System.Xml.Serialization.XmlAttribute]
-        public string draworder;
+        public DrawOrder draworder;
 
         [System.Xml.Serialization.XmlAttribute]
         public float opacity = 1f;

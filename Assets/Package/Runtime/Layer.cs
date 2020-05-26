@@ -14,10 +14,10 @@ namespace TSKT.TiledResolvers
         public struct Data
         {
             [System.Xml.Serialization.XmlAttribute]
-            public string encoding;
+            public Encoding encoding;
 
             [System.Xml.Serialization.XmlAttribute]
-            public string compression;
+            public Compression compression;
 
             [System.Xml.Serialization.XmlText]
             public string value;
@@ -26,24 +26,24 @@ namespace TSKT.TiledResolvers
             {
                 get
                 {
-                    if (encoding == "csv")
+                    if (encoding == Encoding.Csv)
                     {
                         return value.Split(',')
                             .Select(_ => int.Parse(_, System.Globalization.CultureInfo.InvariantCulture))
                             .ToArray();
                     }
-                    else if (encoding == "base64")
+                    else if (encoding == Encoding.Base64)
                     {
                         var bytes = System.Convert.FromBase64String(value);
-                        if (string.IsNullOrEmpty(compression))
+                        if (compression == Compression.None)
                         {
                             // nop
                         }
-                        else if (compression == "gzip")
+                        else if (compression == Compression.Gzip)
                         {
                             bytes = DecompressGzip(bytes);
                         }
-                        else if (compression == "zlib")
+                        else if (compression == Compression.Zlib)
                         {
                             bytes = DecompressZlib(bytes);
                         }

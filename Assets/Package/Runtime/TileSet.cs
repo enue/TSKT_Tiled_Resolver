@@ -24,7 +24,7 @@ namespace TSKT.TiledResolvers
         }
 
         [System.Serializable]
-        public struct Tile
+        public class Tile
         {
             [System.Xml.Serialization.XmlAttribute]
             public int id;
@@ -34,6 +34,9 @@ namespace TSKT.TiledResolvers
             public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
             public Animation animation;
+
+            [System.Xml.Serialization.XmlAttribute]
+            public float probability = 1f;
         }
 
         [System.Serializable]
