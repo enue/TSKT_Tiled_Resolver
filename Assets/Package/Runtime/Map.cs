@@ -44,13 +44,11 @@ namespace TSKT.TiledResolvers
         public TileSet[] tileSets;
         public TileSet[] TileSets => tileSets ?? System.Array.Empty<TileSet>();
 
-        [System.Xml.Serialization.XmlElement("layer")]
+        [System.Xml.Serialization.XmlElement("layer", typeof(TileLayer))]
+        [System.Xml.Serialization.XmlElement("objectgroup", typeof(ObjectLayer))]
+        [System.Xml.Serialization.XmlElement("group", typeof(GroupLayer))]
         public Layer[] layers;
         public Layer[] Layers => layers ?? System.Array.Empty<Layer>();
-
-        [System.Xml.Serialization.XmlElement("objectgroup")]
-        public ObjectGroup[] objectGroups;
-        public ObjectGroup[] ObjectGroups => objectGroups ?? System.Array.Empty<ObjectGroup>();
 
         public static Map Build(string xmlText)
         {
@@ -64,16 +62,17 @@ namespace TSKT.TiledResolvers
             get
             {
                 var usedGids = new HashSet<int>();
-                foreach (var layer in Layers)
+                foreach (var layer in Layers.OfType<TileLayer>())
                 {
                     usedGids.UnionWith(layer.data.Values);
                 }
-                foreach (var objectGroup in ObjectGroups)
+                foreach (var obj in Layers.OfType<ObjectLayer>().SelectMany(_ => _.Objects))
                 {
-                    foreach (var obj in objectGroup.Objects)
-                    {
-                        usedGids.Add(obj.Gid);
-                    }
+                    usedGids.Add(obj.Gid);
+                }
+                foreach (var gid in Layers.OfType<GroupLayer>().SelectMany(_ => _.UsedTileGids))
+                {
+                    usedGids.Add(gid);
                 }
 
                 var result = new List<TileSet>();

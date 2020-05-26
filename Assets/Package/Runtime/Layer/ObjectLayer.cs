@@ -6,7 +6,7 @@ using System.Linq;
 namespace TSKT.TiledResolvers
 {
     [System.Serializable]
-    public class ObjectGroup
+    public class ObjectLayer : Layer
     {
         [System.Serializable]
         public struct Object
@@ -105,30 +105,11 @@ namespace TSKT.TiledResolvers
         }
 
         [System.Xml.Serialization.XmlAttribute]
-        public int id;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public string name;
-
-        [System.Xml.Serialization.XmlAttribute]
         public string color;
         public Color32 Color => PropertyGroup.ParseColor(color);
 
         [System.Xml.Serialization.XmlAttribute]
         public DrawOrder draworder;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public float opacity = 1f;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public float offsetx = 0f;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public float offsety = 0f;
-
-        [System.Xml.Serialization.XmlArrayItem("property")]
-        public Property[] properties;
-        public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
         [System.Xml.Serialization.XmlElement("object")]
         public Object[] objects;

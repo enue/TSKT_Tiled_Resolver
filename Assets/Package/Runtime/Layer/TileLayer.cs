@@ -8,7 +8,7 @@ using System.IO;
 namespace TSKT.TiledResolvers
 {
     [System.Serializable]
-    public class Layer
+    public class TileLayer : Layer
     {
         [System.Serializable]
         public struct Data
@@ -106,34 +106,12 @@ namespace TSKT.TiledResolvers
         }
 
         [System.Xml.Serialization.XmlAttribute]
-        public int id;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public string name;
-
-        [System.Xml.Serialization.XmlAttribute]
         public int width;
 
         [System.Xml.Serialization.XmlAttribute]
         public int height;
 
-        [System.Xml.Serialization.XmlAttribute]
-        public bool visible;
-
-        [System.Xml.Serialization.XmlArrayItem("property")]
-        public Property[] properties;
-        public PropertyGroup PropertyGroup => new PropertyGroup(properties);
-
         [System.Xml.Serialization.XmlElement]
         public Data data;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public float opacity = 1f;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public float offsetx = 0f;
-
-        [System.Xml.Serialization.XmlAttribute]
-        public float offsety = 0f;
     }
 }
