@@ -13,8 +13,16 @@ namespace TSKT.TiledResolvers
         public string version;
         [System.Xml.Serialization.XmlAttribute("tiledversion")]
         public string tiledVersion;
+
         [System.Xml.Serialization.XmlAttribute]
         public Orientation orientation;
+        [System.Xml.Serialization.XmlAttribute("staggerindex")]
+        public StaggerIndex staggerIndex;
+        [System.Xml.Serialization.XmlAttribute("staggeraxis")]
+        public StaggerAxis staggerAxis;
+        [System.Xml.Serialization.XmlAttribute("hexsidelength")]
+        public int hexSideLength;
+
         [System.Xml.Serialization.XmlAttribute("renderorder")]
         public RenderOrder renderOrder;
         [System.Xml.Serialization.XmlAttribute("compressionlevel")]
@@ -56,6 +64,81 @@ namespace TSKT.TiledResolvers
             var serializer = new System.Xml.Serialization.XmlSerializer(typeof(Map));
             var reader = new System.IO.StringReader(xmlText);
             return (Map)serializer.Deserialize(reader);
+        }
+
+        public Vector2 LayerPixelSize
+        {
+            get
+            {
+                if (orientation == Orientation.Orthogonal)
+                {
+                    return new Vector2(
+                        tileWidth * width,
+                        tileHeight * height);
+                }
+                else if (orientation == Orientation.Isometric)
+                {
+                    var length = (tileWidth * width + tileHeight * height) / 2f;
+                    return new Vector2(length, length);
+                }
+                else if (orientation == Orientation.Staggered)
+                {
+                    if (staggerAxis == StaggerAxis.X)
+                    {
+                        return new Vector2(
+                            GetStaggerAxisLength(width, tileWidth, 0),
+                            GetLength(height, tileHeight, width));
+                    }
+                    else if (staggerAxis == StaggerAxis.Y)
+                    {
+                        return new Vector2(
+                            GetLength(width, tileWidth, height),
+                            GetStaggerAxisLength(height, tileHeight, 0));
+                    }
+                    else
+                    {
+                        throw new System.ArgumentException(staggerAxis.ToString());
+                    }
+                }
+                else if (orientation == Orientation.Hexagonal)
+                {
+                    if (staggerAxis == StaggerAxis.X)
+                    {
+                        return new Vector2(
+                            GetStaggerAxisLength(width, tileWidth, hexSideLength),
+                            GetLength(height, tileHeight, width));
+                    }
+                    else if (staggerAxis == StaggerAxis.Y)
+                    {
+                        return new Vector2(
+                            GetLength(width, tileWidth, height),
+                            GetStaggerAxisLength(height, tileHeight, hexSideLength));
+                    }
+                    else
+                    {
+                        throw new System.ArgumentException(staggerAxis.ToString());
+                    }
+                }
+                else
+                {
+                    throw new System.ArgumentException(orientation.ToString());
+                }
+            }
+        }
+
+        static float GetStaggerAxisLength(int tileCount, int tileLength, int hexSideLength)
+        {
+            return (tileCount - 1) * (tileLength + hexSideLength) / 2 + tileLength;
+        }
+
+        static float GetLength(int tileCount, int tileLength, int staggerAxisLength)
+        {
+            float length = tileLength * tileCount;
+            if (staggerAxisLength > 1)
+            {
+                length += tileLength / 2f;
+            }
+            return length;
         }
 
         public IEnumerable<(Layer layer, Vector2 offset, float opacity)> FlattenLayers

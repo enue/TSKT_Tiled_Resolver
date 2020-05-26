@@ -64,8 +64,24 @@ namespace TSKT.TiledResolvers
     }
     public enum DrawOrder
     {
-        Topdown,
+        TopDown,
         [XmlEnum("index")]
         Index,
+    }
+
+    public enum StaggerAxis
+    {
+        [XmlEnum("x")]
+        X,
+        [XmlEnum("y")]
+        Y
+    }
+
+    public enum StaggerIndex
+    {
+        [XmlEnum("odd")]
+        Odd,
+        [XmlEnum("even")]
+        Even,
     }
 }
