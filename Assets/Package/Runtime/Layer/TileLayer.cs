@@ -113,5 +113,13 @@ namespace TSKT.TiledResolvers
 
         [System.Xml.Serialization.XmlElement]
         public Data data;
+
+        int[] values;
+        public int[] Values => values ?? (values = data.Values);
+
+        public int GetValue(int i, int j)
+        {
+            return Values[i + j * width];
+        }
     }
 }
