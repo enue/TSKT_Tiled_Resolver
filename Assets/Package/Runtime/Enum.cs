@@ -64,7 +64,7 @@ namespace TSKT.TiledResolvers
     }
     public enum DrawOrder
     {
-        Down,
+        Topdown,
         [XmlEnum("index")]
         Index,
     }
