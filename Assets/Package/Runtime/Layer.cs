@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.IO.Compression;
+using System.IO;
 
 namespace TSKT.TiledResolvers
 {
@@ -29,25 +31,70 @@ namespace TSKT.TiledResolvers
                     }
                     else if (encoding == "base64")
                     {
-                        var ids = new List<int>();
                         var bytes = System.Convert.FromBase64String(value);
-
-                        for (int i = 0; i < bytes.Length / 4; ++i)
-                        {
-                            var index = i * 4;
-                            var id = bytes[index]
-                                + (bytes[index + 1] << 8)
-                                + (bytes[index + 2] << 16)
-                                + (bytes[index + 3] << 24);
-                            ids.Add(id);
-                        }
-                        return ids.ToArray();
+                        return BytesToInts(bytes);
                     }
-                    else
+                    else if (encoding == "gzip")
                     {
-                        throw new System.ArgumentException("not support encoding " + encoding);
+                        var bytes = DecompressGzip(value);
+                        return BytesToInts(bytes);
+                    }
+                    else if (encoding == "zlib")
+                    {
+                        var bytes = DecompressZlib(value);
+                        return BytesToInts(bytes);
+                    }
+                    throw new System.ArgumentException("not support encoding " + encoding);
+                }
+            }
+
+            public static byte[] DecompressGzip(string base64)
+            {
+                var compressedBytes = System.Convert.FromBase64String(base64);
+                using (var compressed = new MemoryStream(compressedBytes))
+                {
+                    using (var decompressionStream = new GZipStream(compressed, CompressionMode.Decompress))
+                    {
+                        using (var decompressed = new MemoryStream())
+                        {
+                            decompressionStream.CopyTo(decompressed);
+                            return decompressed.ToArray();
+                        }
                     }
                 }
+            }
+
+            public static byte[] DecompressZlib(string base64)
+            {
+                var compressedBytes = System.Convert.FromBase64String(base64);
+                using (var compressed = new MemoryStream(compressedBytes))
+                {
+                    // skip header(2bytes)
+                    compressed.Position = 2;
+                    using (var deflateStream = new DeflateStream(compressed, CompressionMode.Decompress))
+                    {
+                        using (var decompressed = new MemoryStream())
+                        {
+                            deflateStream.CopyTo(decompressed);
+                            return decompressed.ToArray();
+                        }
+                    }
+                }
+            }
+
+            static int[] BytesToInts(byte[] bytes)
+            {
+                var ints = new List<int>();
+                for (int i = 0; i < bytes.Length / 4; ++i)
+                {
+                    var index = i * 4;
+                    var id = bytes[index]
+                        + (bytes[index + 1] << 8)
+                        + (bytes[index + 2] << 16)
+                        + (bytes[index + 3] << 24);
+                    ints.Add(id);
+                }
+                return ints.ToArray();
             }
         }
 
