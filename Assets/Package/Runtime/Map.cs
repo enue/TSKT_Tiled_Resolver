@@ -73,6 +73,28 @@ namespace TSKT.TiledResolvers
             return CoordinateUtility.GetPosition(i, j, orientation, tileWidth, tileHeight, height, staggerAxis, staggerIndex, hexSideLength);
         }
 
+        public bool GetTileByGid(int gid, out TileSet tileSet, out int id)
+        {
+            if (gid == 0)
+            {
+                tileSet = default;
+                id = default;
+                return false;
+            }
+
+            if (TileSets.Length == 0)
+            {
+                tileSet = default;
+                id = default;
+                return false;
+            }
+
+            var index = System.Array.FindLastIndex(TileSets, _ => _.firstGid <= gid);
+            tileSet = TileSets[index - 1];
+            id = gid - tileSet.firstGid;
+            return id < tileSet.tileCount;
+        }
+
         public IEnumerable<(Layer layer, Vector2 offset, float opacity)> FlattenLayers
         {
             get
