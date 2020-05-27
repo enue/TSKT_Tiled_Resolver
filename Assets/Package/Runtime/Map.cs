@@ -125,7 +125,7 @@ namespace TSKT.TiledResolvers
             }
         }
 
-        public TileSet[] UsedTileSets
+        public HashSet<int> UsedGids
         {
             get
             {
@@ -157,6 +157,16 @@ namespace TSKT.TiledResolvers
                         throw new System.ArgumentException(layer.GetType().ToString());
                     }
                 }
+
+                return usedGids;
+            }
+        }
+
+        public TileSet[] UsedTileSets
+        {
+            get
+            {
+                var usedGids = UsedGids;
 
                 var result = new List<TileSet>();
                 for (int i = 0; i < TileSets.Length; ++i)
