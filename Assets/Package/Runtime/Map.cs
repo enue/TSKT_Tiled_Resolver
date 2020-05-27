@@ -93,7 +93,7 @@ namespace TSKT.TiledResolvers
             tileSet = TileSets[index];
             id = gid - tileSet.firstGid;
 
-            if (string.IsNullOrEmpty(tileSet.source))
+            if (!string.IsNullOrEmpty(tileSet.source))
             {
                 return true;
             }
