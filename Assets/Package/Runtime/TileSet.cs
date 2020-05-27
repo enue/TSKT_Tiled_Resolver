@@ -146,6 +146,16 @@ namespace TSKT.TiledResolvers
                 id / columns);
         }
 
+        public RectInt GetRectById(int id)
+        {
+            var pos = GetPositionById(id);
+            return new RectInt(
+                pos.x * tileWidth,
+                pos.y * tileHeight,
+                tileWidth,
+                tileHeight);
+        }
+
         public bool Exported => !string.IsNullOrEmpty(source);
     }
 }
