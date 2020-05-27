@@ -101,6 +101,11 @@ namespace TSKT.TiledResolvers
         public Tile TryGetTile(int x, int y)
         {
             var id = GetId(x, y);
+            return TryGetTile(id);
+        }
+
+        public Tile TryGetTile(int id)
+        {
             return Tiles.FirstOrDefault(_ => _.id == id);
         }
 
