@@ -92,5 +92,23 @@ namespace TSKT.TiledResolvers
             var reader = new System.IO.StringReader(xmlText);
             return (TileSet)serializer.Deserialize(reader);
         }
+
+        public int GetId(int x, int y)
+        {
+            return x + columns * y;
+        }
+
+        public Tile TryGetTile(int x, int y)
+        {
+            var id = GetId(x, y);
+            return Tiles.FirstOrDefault(_ => _.id == id);
+        }
+
+        public Vector2Int GetPositionById(int id)
+        {
+            return new Vector2Int(
+                id % columns,
+                id / columns);
+        }
     }
 }
