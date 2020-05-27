@@ -90,7 +90,7 @@ namespace TSKT.TiledResolvers
             }
 
             var index = System.Array.FindLastIndex(TileSets, _ => _.firstGid <= gid);
-            tileSet = TileSets[index - 1];
+            tileSet = TileSets[index];
             id = gid - tileSet.firstGid;
             return id < tileSet.tileCount;
         }
