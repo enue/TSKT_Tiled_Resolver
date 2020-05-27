@@ -56,6 +56,36 @@ namespace TSKT.TiledResolvers
             [System.Xml.Serialization.XmlElement("frame")]
             public Frame[] frames;
             public Frame[] Frames => frames ?? System.Array.Empty<Frame>();
+
+            public int[] FrameEndTimes
+            {
+                get
+                {
+                    var times = new int[Frames.Length];
+                    int time = 0;
+                    for (int i = 0; i < Frames.Length; ++i)
+                    {
+                        time += Frames[i].duration;
+                        times[i] = time;
+                    }
+                    return times;
+                }
+            }
+
+            public float[] FrameEndSeconds
+            {
+                get
+                {
+                    var times = FrameEndTimes;
+                    var seconds = new float[times.Length];
+
+                    for (int i = 0; i < times.Length; ++i)
+                    {
+                        seconds[i] = times[i] / 1000f;
+                    }
+                    return seconds;
+                }
+            }
         }
 
         [System.Xml.Serialization.XmlAttribute]
