@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
-using System.IO.Compression;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
 
 namespace TSKT.TiledResolvers
 {
@@ -114,12 +112,12 @@ namespace TSKT.TiledResolvers
         [System.Xml.Serialization.XmlElement]
         public Data data;
 
-        int[] values;
-        public int[] Values => values ?? (values = data.Values);
+        int[] gids;
+        public int[] Gids => gids ?? (gids = data.Values);
 
-        public int GetValue(int i, int j)
+        public int GetGid(int i, int j)
         {
-            return Values[i + j * width];
+            return Gids[i + j * width];
         }
     }
 }
