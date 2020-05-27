@@ -115,5 +115,7 @@ namespace TSKT.TiledResolvers
                 id % columns,
                 id / columns);
         }
+
+        public bool Exported => !string.IsNullOrEmpty(source);
     }
 }
