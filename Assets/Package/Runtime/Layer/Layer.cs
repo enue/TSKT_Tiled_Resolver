@@ -43,7 +43,7 @@ namespace TSKT.TiledResolvers
         {
             get
             {
-                if (visible)
+                if (!visible)
                 {
                     return false;
                 }
