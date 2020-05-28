@@ -143,14 +143,14 @@ namespace TSKT.TiledResolvers
             return null;
         }
 
-        public IEnumerable<(Layer layer, Vector2 offset, float opacity, Color? tintColor)> FlattenLayers
+        public IEnumerable<Layer> FlattenLayers
         {
             get
             {
-                var tasks = new Stack<(Layer layer, Vector2 offset, float opacity, Color? tintColor)>();
+                var tasks = new Stack<Layer>();
                 foreach(var it in Layers.Reverse())
                 {
-                    tasks.Push((it, Vector2.zero, 1f, null));
+                    tasks.Push(it);
                 }
 
                 while (tasks.Count > 0)
@@ -158,25 +158,11 @@ namespace TSKT.TiledResolvers
                     var task = tasks.Pop();
                     yield return task;
 
-                    if (task.layer is GroupLayer groupLayer)
+                    if (task is GroupLayer groupLayer)
                     {
-                        var offset = new Vector2(
-                            task.offset.x + groupLayer.offsetx,
-                            task.offset.y + groupLayer.offsety);
-                        var opacity = task.opacity * groupLayer.opacity;
-
-                        Color32? tintColor;
-                        if (groupLayer.TintColor.HasValue && task.tintColor.HasValue)
-                        {
-                            tintColor = groupLayer.TintColor * task.tintColor;
-                        }
-                        else
-                        {
-                            tintColor = groupLayer.TintColor ?? task.tintColor;
-                        }
                         foreach (var it in groupLayer.Layers.Reverse())
                         {
-                            tasks.Push((it, offset, opacity, tintColor));
+                            tasks.Push(it);
                         }
                     }
                 }
