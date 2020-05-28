@@ -28,6 +28,10 @@ namespace TSKT.TiledResolvers
         [System.Xml.Serialization.XmlAttribute]
         public float offsety = 0f;
 
+        [System.Xml.Serialization.XmlAttribute("tintcolor")]
+        public string tintColor;
+        public Color32? TintColor => string.IsNullOrEmpty(tintColor) ? (Color32?)null : PropertyGroup.ParseColor(tintColor);
+
         [System.Xml.Serialization.XmlArrayItem("property")]
         public Property[] properties;
         public PropertyGroup PropertyGroup => new PropertyGroup(properties);
