@@ -70,7 +70,7 @@ namespace TSKT.TiledResolvers
 
         public void BuildHierarchy()
         {
-            foreach (var (layer, _, _, _) in FlattenLayers)
+            foreach (var layer in FlattenLayers)
             {
                 if (layer is GroupLayer groupLayer)
                 {
@@ -125,9 +125,7 @@ namespace TSKT.TiledResolvers
 
         public ObjectLayer.Object TryGetObjectById(int id)
         {
-            var objectLayes = FlattenLayers
-                .Select(_ => _.layer)
-                .OfType<ObjectLayer>();
+            var objectLayes = FlattenLayers.OfType<ObjectLayer>();
 
             foreach (var it in objectLayes)
             {
@@ -175,7 +173,7 @@ namespace TSKT.TiledResolvers
             {
                 var usedGids = new HashSet<int>();
 
-                foreach (var (layer, _, _, _) in FlattenLayers)
+                foreach (var layer in FlattenLayers)
                 {
                     if (layer is TileLayer tileLayer)
                     {
