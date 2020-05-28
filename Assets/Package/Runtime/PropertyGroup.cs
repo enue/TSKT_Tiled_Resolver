@@ -137,11 +137,11 @@ namespace TSKT.TiledResolvers
             var value = System.Convert.ToInt32(colorCode, 16);
 
             int a;
-            if (colorCode.Length == 6)
+            if (colorCode.Length == 8)
             {
                 a = (value >> 24) & 0xff;
             }
-            else if (colorCode.Length == 8)
+            else if (colorCode.Length == 6)
             {
                 a = 0xff;
             }
