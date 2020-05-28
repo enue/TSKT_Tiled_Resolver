@@ -9,7 +9,7 @@ namespace TSKT.TiledResolvers
     public class ObjectLayer : Layer
     {
         [System.Serializable]
-        public struct Object
+        public class Object
         {
             [System.Serializable]
             public class Polygon
@@ -67,7 +67,7 @@ namespace TSKT.TiledResolvers
             [System.Xml.Serialization.XmlAttribute]
             public int id;
             [System.Xml.Serialization.XmlAttribute]
-            public bool visible;
+            public bool visible = true;
             [System.Xml.Serialization.XmlAttribute]
             public string name;
             [System.Xml.Serialization.XmlAttribute]

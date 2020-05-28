@@ -81,11 +81,9 @@ namespace TSKT.TiledResolvers
                 }
                 else if (layer is ObjectLayer objectLayer)
                 {
-                    for (int i = 0; i < objectLayer.Objects.Length; ++i)
+                    foreach (var obj in objectLayer.Objects)
                     {
-                        var obj = objectLayer.Objects[i];
                         obj.parent = objectLayer;
-                        objectLayer.Objects[i] = obj;
                     }
                 }
             }
@@ -125,7 +123,7 @@ namespace TSKT.TiledResolvers
             return id < tileSet.tileCount;
         }
 
-        public bool TryGetObjectById(int id, out ObjectLayer.Object result)
+        public ObjectLayer.Object TryGetObjectById(int id)
         {
             var objectLayes = FlattenLayers
                 .Select(_ => _.layer)
@@ -137,14 +135,12 @@ namespace TSKT.TiledResolvers
                 {
                     if (obj.id == id)
                     {
-                        result = obj;
-                        return true;
+                        return obj;
                     }
                 }
             }
 
-            result = default;
-            return false;
+            return null;
         }
 
         public IEnumerable<(Layer layer, Vector2 offset, float opacity, Color? tintColor)> FlattenLayers
