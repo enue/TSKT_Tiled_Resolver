@@ -65,6 +65,8 @@ namespace TSKT.TiledResolvers
             }
 
             [System.Xml.Serialization.XmlAttribute]
+            public int id;
+            [System.Xml.Serialization.XmlAttribute]
             public bool visible;
             [System.Xml.Serialization.XmlAttribute]
             public string name;
