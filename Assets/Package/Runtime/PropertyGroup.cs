@@ -103,13 +103,26 @@ namespace TSKT.TiledResolvers
 
         public static Color32 ParseColor(string src)
         {
-            var value = System.Convert.ToInt32(src.TrimStart('#'), 16);
-            var a = (value >> 24) & 0xff;
+            var colorCode = src.TrimStart('#');
+            var value = System.Convert.ToInt32(colorCode, 16);
+
+            int a;
+            if (colorCode.Length == 6)
+            {
+                a = (value >> 24) & 0xff;
+            }
+            else if (colorCode.Length == 8)
+            {
+                a = 0xff;
+            }
+            else
+            {
+                throw new System.ArgumentException(src);
+            }
             var r = (value >> 16) & 0xff;
             var g = (value >> 8) & 0xff;
             var b = value & 0xff;
             return new Color32((byte)r, (byte)g, (byte)b, (byte)a);
-
         }
     }
 }
