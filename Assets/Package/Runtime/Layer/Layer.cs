@@ -36,5 +36,7 @@ namespace TSKT.TiledResolvers
         public Property[] properties;
         public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
+        [System.Xml.Serialization.XmlIgnore]
+        public GroupLayer parent;
     }
 }

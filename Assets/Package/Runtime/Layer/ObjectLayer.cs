@@ -100,6 +100,9 @@ namespace TSKT.TiledResolvers
             [System.Xml.Serialization.XmlElement]
             public Text text;
 
+            [System.Xml.Serialization.XmlIgnore]
+            public ObjectLayer parent;
+
             // https://github.com/bjorn/tiled/blob/d027f7c14b5e0e24584277fd4752d67fcde90ffd/src/libtiled/wangset.cpp#L38-L41
             public int Gid => (int)(gid & (~(1 << 30)) & (~(1 << 31)));
             public bool FlipX => (gid & (1 << 31)) != 0;

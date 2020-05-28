@@ -63,7 +63,32 @@ namespace TSKT.TiledResolvers
         {
             var serializer = new System.Xml.Serialization.XmlSerializer(typeof(Map));
             var reader = new System.IO.StringReader(xmlText);
-            return (Map)serializer.Deserialize(reader);
+            var map =(Map)serializer.Deserialize(reader);
+            map.BuildHierarchy();
+            return map;
+        }
+
+        public void BuildHierarchy()
+        {
+            foreach (var (layer, _, _, _) in FlattenLayers)
+            {
+                if (layer is GroupLayer groupLayer)
+                {
+                    foreach (var child in groupLayer.Layers)
+                    {
+                        child.parent = groupLayer;
+                    }
+                }
+                else if (layer is ObjectLayer objectLayer)
+                {
+                    for (int i = 0; i < objectLayer.Objects.Length; ++i)
+                    {
+                        var obj = objectLayer.Objects[i];
+                        obj.parent = objectLayer;
+                        objectLayer.Objects[i] = obj;
+                    }
+                }
+            }
         }
 
         public Vector2 LayerPixelSize => CoordinateUtility.GetLayerPixelSize(orientation, width, height, tileWidth, tileHeight, staggerAxis, hexSideLength);
