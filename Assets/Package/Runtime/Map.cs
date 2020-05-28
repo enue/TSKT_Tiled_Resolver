@@ -100,30 +100,40 @@ namespace TSKT.TiledResolvers
             return id < tileSet.tileCount;
         }
 
-        public IEnumerable<(Layer layer, Vector2 offset, float opacity)> FlattenLayers
+        public IEnumerable<(Layer layer, Vector2 offset, float opacity, Color? tintColor)> FlattenLayers
         {
             get
             {
-                var tasks = new Stack<(Layer layer, Vector2 offset, float opacity)>();
+                var tasks = new Stack<(Layer layer, Vector2 offset, float opacity, Color? tintColor)>();
                 foreach(var it in Layers.Reverse())
                 {
-                    tasks.Push((it, Vector2.zero, 1f));
+                    tasks.Push((it, Vector2.zero, 1f, null));
                 }
 
                 while (tasks.Count > 0)
                 {
-                    var taks = tasks.Pop();
-                    yield return taks;
+                    var task = tasks.Pop();
+                    yield return task;
 
-                    if (taks.layer is GroupLayer groupLayer)
+                    if (task.layer is GroupLayer groupLayer)
                     {
                         var offset = new Vector2(
-                            taks.offset.x + groupLayer.offsetx,
-                            taks.offset.y + groupLayer.offsety);
-                        var opacity = taks.opacity * groupLayer.opacity;
+                            task.offset.x + groupLayer.offsetx,
+                            task.offset.y + groupLayer.offsety);
+                        var opacity = task.opacity * groupLayer.opacity;
+
+                        Color32? tintColor;
+                        if (groupLayer.TintColor.HasValue && task.tintColor.HasValue)
+                        {
+                            tintColor = groupLayer.TintColor * task.tintColor;
+                        }
+                        else
+                        {
+                            tintColor = groupLayer.TintColor ?? task.tintColor;
+                        }
                         foreach (var it in groupLayer.Layers.Reverse())
                         {
-                            tasks.Push((it, offset, opacity));
+                            tasks.Push((it, offset, opacity, tintColor));
                         }
                     }
                 }
@@ -136,7 +146,7 @@ namespace TSKT.TiledResolvers
             {
                 var usedGids = new HashSet<int>();
 
-                foreach (var (layer, _, _) in FlattenLayers)
+                foreach (var (layer, _, _, _) in FlattenLayers)
                 {
                     if (layer is TileLayer tileLayer)
                     {
