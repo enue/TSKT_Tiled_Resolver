@@ -101,6 +101,21 @@ namespace TSKT.TiledResolvers
             return false;
         }
 
+        public bool TryGetFile(string key, out string value)
+        {
+            foreach (var it in properties)
+            {
+                if (it.name == key
+                    && it.type == PropertyType.File)
+                {
+                    value = it.value;
+                    return true;
+                }
+            }
+            value = default;
+            return false;
+        }
+
         public static Color32 ParseColor(string src)
         {
             var colorCode = src.TrimStart('#');

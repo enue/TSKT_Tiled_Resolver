@@ -31,6 +31,8 @@ namespace TSKT.TiledResolvers
         Int,
         [XmlEnum("color")]
         Color,
+        [XmlEnum("file")]
+        File,
     }
     public enum RenderOrder
     {
