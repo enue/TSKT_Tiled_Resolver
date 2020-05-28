@@ -100,6 +100,28 @@ namespace TSKT.TiledResolvers
             return id < tileSet.tileCount;
         }
 
+        public bool TryGetObjectById(int id, out ObjectLayer.Object result)
+        {
+            var objectLayes = FlattenLayers
+                .Select(_ => _.layer)
+                .OfType<ObjectLayer>();
+
+            foreach (var it in objectLayes)
+            {
+                foreach(var obj in it.Objects)
+                {
+                    if (obj.id == id)
+                    {
+                        result = obj;
+                        return true;
+                    }
+                }
+            }
+
+            result = default;
+            return false;
+        }
+
         public IEnumerable<(Layer layer, Vector2 offset, float opacity, Color? tintColor)> FlattenLayers
         {
             get
