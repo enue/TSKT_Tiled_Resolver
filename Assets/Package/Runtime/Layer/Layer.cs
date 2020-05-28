@@ -17,6 +17,9 @@ namespace TSKT.TiledResolvers
         public bool visible;
 
         [System.Xml.Serialization.XmlAttribute]
+        public bool locked;
+
+        [System.Xml.Serialization.XmlAttribute]
         public float opacity = 1f;
 
         [System.Xml.Serialization.XmlAttribute]
