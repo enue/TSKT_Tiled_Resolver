@@ -14,7 +14,7 @@ namespace TSKT.TiledResolvers
         public string name;
 
         [System.Xml.Serialization.XmlAttribute]
-        public bool visible;
+        public bool visible = true;
 
         [System.Xml.Serialization.XmlAttribute]
         public bool locked;
