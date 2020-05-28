@@ -107,6 +107,9 @@ namespace TSKT.TiledResolvers
             public int Gid => (int)(gid & (~(1 << 30)) & (~(1 << 31)));
             public bool FlipX => (gid & (1 << 31)) != 0;
             public bool FlipY => (gid & (1 << 30)) != 0;
+
+            public bool VisibleInHierarchy => visible && parent.VisibleInHierarchy;
+            public Vector2 WorldPosition => new Vector2(x, y) + parent.WorldOffset;
         }
 
         [System.Xml.Serialization.XmlAttribute]
