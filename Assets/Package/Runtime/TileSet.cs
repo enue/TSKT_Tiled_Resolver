@@ -50,14 +50,14 @@ namespace TSKT.TiledResolvers
                 [System.Xml.Serialization.XmlAttribute]
                 public int duration;
 
-                public float DurationSeconds => duration / 1000f;
+                readonly public float DurationSeconds => duration / 1000f;
             }
 
             [System.Xml.Serialization.XmlElement("frame")]
             public Frame[] frames;
-            public Frame[] Frames => frames ?? System.Array.Empty<Frame>();
+            readonly public Frame[] Frames => frames ?? System.Array.Empty<Frame>();
 
-            public int[] FrameEndTimes
+            readonly public int[] FrameEndTimes
             {
                 get
                 {
@@ -72,7 +72,7 @@ namespace TSKT.TiledResolvers
                 }
             }
 
-            public float[] FrameEndSeconds
+            readonly public float[] FrameEndSeconds
             {
                 get
                 {
@@ -114,7 +114,7 @@ namespace TSKT.TiledResolvers
 
         [System.Xml.Serialization.XmlElement("tile")]
         public Tile[] tiles;
-        public Tile[] Tiles => tiles ?? System.Array.Empty<Tile>();
+        readonly public Tile[] Tiles => tiles ?? System.Array.Empty<Tile>();
 
         public static TileSet Build(string xmlText)
         {
@@ -123,30 +123,30 @@ namespace TSKT.TiledResolvers
             return (TileSet)serializer.Deserialize(reader);
         }
 
-        public int GetId(int x, int y)
+        readonly public int GetId(int x, int y)
         {
             return x + columns * y;
         }
 
-        public Tile TryGetTile(int x, int y)
+        readonly public Tile TryGetTile(int x, int y)
         {
             var id = GetId(x, y);
             return TryGetTile(id);
         }
 
-        public Tile TryGetTile(int id)
+        readonly public Tile TryGetTile(int id)
         {
             return Tiles.FirstOrDefault(_ => _.id == id);
         }
 
-        public Vector2Int GetPositionById(int id)
+        readonly public Vector2Int GetPositionById(int id)
         {
             return new Vector2Int(
                 id % columns,
                 id / columns);
         }
 
-        public RectInt GetRectById(int id)
+        readonly public RectInt GetRectById(int id)
         {
             var pos = GetPositionById(id);
             return new RectInt(
@@ -156,6 +156,6 @@ namespace TSKT.TiledResolvers
                 tileHeight);
         }
 
-        public bool Exported => !string.IsNullOrEmpty(source);
+        readonly public bool Exported => !string.IsNullOrEmpty(source);
     }
 }

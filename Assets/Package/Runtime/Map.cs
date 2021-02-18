@@ -46,18 +46,18 @@ namespace TSKT.TiledResolvers
 
         [System.Xml.Serialization.XmlArrayItem("property")]
         public Property[] properties;
-        public PropertyGroup PropertyGroup => new PropertyGroup(properties);
+        readonly public PropertyGroup PropertyGroup => new PropertyGroup(properties);
 
         [System.Xml.Serialization.XmlElement("tileset")]
         public TileSet[] tileSets;
-        public TileSet[] TileSets => tileSets ?? System.Array.Empty<TileSet>();
+        readonly public TileSet[] TileSets => tileSets ?? System.Array.Empty<TileSet>();
 
         [System.Xml.Serialization.XmlElement("layer", typeof(TileLayer))]
         [System.Xml.Serialization.XmlElement("objectgroup", typeof(ObjectLayer))]
         [System.Xml.Serialization.XmlElement("group", typeof(GroupLayer))]
         [System.Xml.Serialization.XmlElement("image", typeof(ImageLayer))]
         public Layer[] layers;
-        public Layer[] Layers => layers ?? System.Array.Empty<Layer>();
+        readonly public Layer[] Layers => layers ?? System.Array.Empty<Layer>();
 
         public static Map Build(string xmlText)
         {
@@ -89,14 +89,14 @@ namespace TSKT.TiledResolvers
             }
         }
 
-        public Vector2 LayerPixelSize => CoordinateUtility.GetLayerPixelSize(orientation, width, height, tileWidth, tileHeight, staggerAxis, hexSideLength);
+        readonly public Vector2 LayerPixelSize => CoordinateUtility.GetLayerPixelSize(orientation, width, height, tileWidth, tileHeight, staggerAxis, hexSideLength);
 
-        public Vector2 GetCellPosition(int i, int j)
+        readonly public Vector2 GetCellPosition(int i, int j)
         {
             return CoordinateUtility.GetPosition(i, j, orientation, tileWidth, tileHeight, height, staggerAxis, staggerIndex, hexSideLength);
         }
 
-        public bool GetTileByGid(int gid, out TileSet tileSet, out int id)
+        readonly public bool GetTileByGid(int gid, out TileSet tileSet, out int id)
         {
             if (gid == 0)
             {
@@ -123,7 +123,7 @@ namespace TSKT.TiledResolvers
             return id < tileSet.tileCount;
         }
 
-        public ObjectLayer.Object TryGetObjectById(int id)
+        readonly public ObjectLayer.Object TryGetObjectById(int id)
         {
             var objectLayes = FlattenLayers.OfType<ObjectLayer>();
 
@@ -141,7 +141,7 @@ namespace TSKT.TiledResolvers
             return null;
         }
 
-        public IEnumerable<Layer> FlattenLayers
+        readonly public IEnumerable<Layer> FlattenLayers
         {
             get
             {
@@ -167,7 +167,7 @@ namespace TSKT.TiledResolvers
             }
         }
 
-        public HashSet<int> UsedGids
+        readonly public HashSet<int> UsedGids
         {
             get
             {
@@ -204,7 +204,7 @@ namespace TSKT.TiledResolvers
             }
         }
 
-        public TileSet[] UsedTileSets
+        readonly public TileSet[] UsedTileSets
         {
             get
             {

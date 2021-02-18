@@ -20,7 +20,7 @@ namespace TSKT.TiledResolvers
             [System.Xml.Serialization.XmlText]
             public string value;
 
-            public int[] Values
+            readonly public int[] Values
             {
                 get
                 {

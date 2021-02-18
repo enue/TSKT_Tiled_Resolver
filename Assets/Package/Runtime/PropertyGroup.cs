@@ -26,7 +26,7 @@ namespace TSKT.TiledResolvers
             this.properties = properties ?? System.Array.Empty<Property>();
         }
 
-        public bool TryGetString(string key, out string value)
+        readonly public bool TryGetString(string key, out string value)
         {
             foreach (var it in properties)
             {
@@ -41,7 +41,7 @@ namespace TSKT.TiledResolvers
             return false;
         }
 
-        public bool TryGetBool(string key, out bool value)
+        readonly public bool TryGetBool(string key, out bool value)
         {
             foreach (var it in properties)
             {
@@ -56,7 +56,7 @@ namespace TSKT.TiledResolvers
             return false;
         }
 
-        public bool TryGetInt(string key, out int value)
+        readonly public bool TryGetInt(string key, out int value)
         {
             foreach (var it in properties)
             {
@@ -71,7 +71,7 @@ namespace TSKT.TiledResolvers
             return false;
         }
 
-        public bool TryGetFloat(string key, out float value)
+        readonly public bool TryGetFloat(string key, out float value)
         {
             foreach (var it in properties)
             {
@@ -86,7 +86,7 @@ namespace TSKT.TiledResolvers
             return false;
         }
 
-        public bool TryGetColor(string key, out Color32 value)
+        readonly public bool TryGetColor(string key, out Color32 value)
         {
             foreach (var it in properties)
             {
@@ -101,7 +101,7 @@ namespace TSKT.TiledResolvers
             return false;
         }
 
-        public bool TryGetFile(string key, out string value)
+        readonly public bool TryGetFile(string key, out string value)
         {
             foreach (var it in properties)
             {
@@ -116,7 +116,7 @@ namespace TSKT.TiledResolvers
             return false;
         }
 
-        public bool TryGetObject(string key, out int value)
+        readonly public bool TryGetObject(string key, out int value)
         {
             foreach (var it in properties)
             {
